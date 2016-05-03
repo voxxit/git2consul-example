@@ -1,8 +1,10 @@
 ### HOW-TO: Consul Key/Values from GitHub
 
-In this example, we will use a Docker image running git2consul on ECS to automatically replicate key/values to multiple datacenters automatically when it changes occur on the respective branches.
+In this example, we will use a Docker image running git2consul to automatically replicate key/values stored in the [production](https://github.com/voxxit/git2consul-example/tree/production), [staging](https://github.com/voxxit/git2consul-example/tree/staging) and [development](https://github.com/voxxit/git2consul-example/tree/development) branches of this example repo to Consul automatically when it changes occur on the respective branches.
 
-Here is the contents of `app.json` - the configuration for `git2consul`:
+---
+
+Here is the contents of `app.json` - [our configuration file for `git2consul`](https://github.com/Cimpress-MCP/git2consul#configuration):
 
 ```
 {
@@ -45,7 +47,7 @@ docker run \
     -bootstrap
 ```
 
-Then, you can build & run the Docker image from this repo:
+Then, build the Docker image containing the configuration file from the `Dockerfile`, and run it:
 
 ```
 docker build -t voxxit/git2consul .
@@ -57,7 +59,7 @@ docker run \
   voxxit/git2consul
 ```
 
-And, voila!
+You should see output similar to the following:
 
 ```
 {"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"Adding /etc/git2consul.json to KV git2consul/config as: \n{\n  \"version\": \"1.0\",\n  \"repos\" : [\n    {\n      \"name\" : \"app\",\n      \"expand_keys\": true,\n      \"url\" : \"https://github.com/voxxit/git2consul-example.git\",\n      \"branches\" : [\n        \"production\",\n        \"staging\",\n        \"development\"\n      ],\n      \"hooks\": [\n        {\n          \"type\" : \"github\",\n          \"port\" : \"8888\",\n          \"url\" : \"/github\"\n        }\n      ]\n    }\n  ]\n}\n","time":"2016-05-03T13:42:54.510Z","v":0}
