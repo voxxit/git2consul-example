@@ -2,7 +2,7 @@
 
 In this example, we will use a Docker image running git2consul on ECS to automatically replicate key/values to multiple datacenters automatically when it changes occur on the respective branches.
 
-First, save the following to `example.json`:
+Here is the contents of `app.json` - the configuration for `git2consul`:
 
 ```
 {
@@ -45,30 +45,33 @@ docker run \
     -bootstrap
 ```
 
-Then, you can pull & run the Docker image:
+Then, you can build & run the Docker image from this repo:
 
 ```
-docker pull voxxit/git2consul:latest
+docker build -t voxxit/git2consul .
 
 docker run \
   --rm \
   --link consul:consul
   --env CONSUL_ENDPOINT=consul \
-  voxxit/git2consul:latest
+  voxxit/git2consul
 ```
 
 And, voila!
 
 ```
-{"name":"git2consul","hostname":"docker","pid":1,"level":30,"msg":"git2consul is running","time":"2016-05-03T13:15:16.069Z","v":0}
-{"name":"git2consul","hostname":"docker","pid":1,"level":30,"msg":"Initting repo orders","time":"2016-05-03T13:15:16.073Z","v":0}
-{"name":"git2consul","hostname":"docker","pid":1,"level":30,"msg":"Initting branch /tmp/orders /tmp/orders/production","time":"2016-05-03T13:15:16.073Z","v":0}
-{"name":"git2consul","hostname":"docker","pid":1,"level":30,"msg":"Initting branch /tmp/orders /tmp/orders/staging","time":"2016-05-03T13:15:16.074Z","v":0}
-{"name":"git2consul","hostname":"docker","pid":1,"level":40,"msg":"Purging branch cache /tmp/orders/production for branch production in repo orders","time":"2016-05-03T13:15:16.074Z","v":0}
-{"name":"git2consul","hostname":"docker","pid":1,"level":40,"msg":"Purging branch cache /tmp/orders/staging for branch staging in repo orders","time":"2016-05-03T13:15:16.075Z","v":0}
-{"name":"git2consul","hostname":"docker","pid":1,"level":30,"msg":"Initialized branch production from orders","time":"2016-05-03T13:15:17.052Z","v":0}
-{"name":"git2consul","hostname":"docker","pid":1,"level":30,"msg":"Initialized branch staging from orders","time":"2016-05-03T13:15:17.055Z","v":0}
-{"name":"git2consul","hostname":"docker","pid":1,"level":30,"msg":"Loaded repo orders","time":"2016-05-03T13:15:17.057Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"Adding /etc/git2consul.json to KV git2consul/config as: \n{\n  \"version\": \"1.0\",\n  \"repos\" : [\n    {\n      \"name\" : \"app\",\n      \"expand_keys\": true,\n      \"url\" : \"https://github.com/voxxit/git2consul-example.git\",\n      \"branches\" : [\n        \"production\",\n        \"staging\",\n        \"development\"\n      ],\n      \"hooks\": [\n        {\n          \"type\" : \"github\",\n          \"port\" : \"8888\",\n          \"url\" : \"/github\"\n        }\n      ]\n    }\n  ]\n}\n","time":"2016-05-03T13:42:54.510Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"git2consul is running","time":"2016-05-03T13:42:54.719Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"Initting repo app","time":"2016-05-03T13:42:54.725Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"Initting branch /tmp/app /tmp/app/production","time":"2016-05-03T13:42:54.725Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"Initting branch /tmp/app /tmp/app/staging","time":"2016-05-03T13:42:54.726Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"Initting branch /tmp/app /tmp/app/development","time":"2016-05-03T13:42:54.726Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":40,"msg":"Purging branch cache /tmp/app/production for branch production in repo app","time":"2016-05-03T13:42:54.727Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":40,"msg":"Purging branch cache /tmp/app/staging for branch staging in repo app","time":"2016-05-03T13:42:54.728Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":40,"msg":"Purging branch cache /tmp/app/development for branch development in repo app","time":"2016-05-03T13:42:54.728Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"Initialized branch staging from app","time":"2016-05-03T13:42:55.398Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"Initialized branch development from app","time":"2016-05-03T13:42:55.401Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"Initialized branch production from app","time":"2016-05-03T13:42:55.418Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"github listener initialized at http://localhost:8888/github","time":"2016-05-03T13:42:55.473Z","v":0}
+{"name":"git2consul","hostname":"136480d59a01","pid":1,"level":30,"msg":"Loaded repo app","time":"2016-05-03T13:42:55.474Z","v":0}
 ```
-
-**NOTE:** Pulls from https://github.com/voxxit/git2consul-example!

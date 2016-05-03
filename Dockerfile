@@ -5,4 +5,6 @@ COPY app.json /etc/git2consul.json
 ENV CONSUL_ENDPOINT consul
 ENV CONSUL_PORT 8500
 
-CMD [ "node", "index.js", "--config-file", "/etc/git2consul.json" ]
+EXPOSE 8888/tcp
+
+CMD [ "--config-file", "/etc/git2consul.json" ]
