@@ -42,7 +42,7 @@ docker run \
   --host consul \
   -p 8400:8400 \
   -p 8500:8500 \
-  -p 8600:53/udp \
+  -p 8600:8600/udp \
   gliderlabs/consul-server:latest \
     -bootstrap
 ```
